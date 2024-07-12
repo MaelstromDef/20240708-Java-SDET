@@ -2,7 +2,7 @@ package Java.Personal;
 
 public class App {
     public static void main(String[] args) {
-        CsvParser parser = new CsvParser("Java\\Personal\\csvFile.csv");
+        CsvParser parser = new CsvParser("Java\\QA 1\\csvFile.csv");
         parser.print();
     }
 }

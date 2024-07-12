@@ -81,7 +81,6 @@ public class CsvParser{
 
         // Handle item separators
         if(c == ','){
-            System.out.println("ADDING:\n" + current + "\n");
             items.add(current);
             current = "";
             return null;
