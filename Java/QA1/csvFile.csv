@@ -2,5 +2,7 @@
 
 new line testing.","b1,comma testing.","c1,comma followed by end of row testing."
 a2,b2,c2
-a3,b3,c3
+a3,"b3"" ""
+",c3
 a4,b4,c4
+a5,,

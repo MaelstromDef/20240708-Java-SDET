@@ -1,0 +1,39 @@
+Question 2: What is one way to change the Java version for your Maven project?
+1. Java Compiler Plugin
+2. None of these.
+3. Maven compiler plugin.
+4. Maven Java plugin.
+
+My Answer: 2
+Reason: The only way to change the Java version for a Maven project in VS Code from what is
+        shown in class is to update the pom.xml target and source tags, which is not tied to any plugin.
+
+-----------------------
+Which of the following is not a variable scope in Java?
+1. Global
+2. Class
+3. Block
+4. Instance
+
+My Answer: 4
+Reason: Arbitrarily chosen for lack of correct answer, since Java contains all of these.
+        Global: Variables that are accessible throughout the entirety of a project. Created using the static keyword in Java.
+        Class: Variables that are accessible throughout a class instance's (object's) lifespan. Created by declaring a non-static class field in Java.
+        Block: Variables that are accessible throughout a block's lifespan. Created by declaring a variable within said block in Java.
+        Instance: Variables that are accessible throughout a class instance's (object's) lifespan. Created by declaring a non-static class field in Java.
+
+-----------------------
+The ability of an object to hide its data and methods from other components within the application.
+1. Abstraction
+2. Encapsulation
+3. Polymorphism
+4. Inheritance
+
+My Answer: 1
+Reason: Abstraction deals with making programming less complex by hiding implementation wihtin classes and methods.
+        Another possible answer could be encapsulation, which deals with promoting loose coupling and high cohesion by
+        having classes contain all data and behavior necessary for operation within themselves.
+        Due to the question focusing on the object hiding the data and methods from other classes, this
+        aligns more with abstraction than encapsulation.
+
+-----------------------
