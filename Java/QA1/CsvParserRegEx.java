@@ -30,8 +30,9 @@ public class CsvParserRegEx implements ICsvParser {
     }
 
     public void printFileContents(){
+        System.out.println("------------------------------------");
         for(String str : fileContents){
-            System.out.println(str + "\t|\t");
+            System.out.println(str + "\n------------------------------------");
         }
     }
 }
