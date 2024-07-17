@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "Java.Personal.App",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AhugginsTestingApplication<ahuggins-testing>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.skillstorm.ahuggins_testing.AhugginsTestingApplication",
+            "projectName": "ahuggins-testing",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
