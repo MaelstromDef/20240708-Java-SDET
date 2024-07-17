@@ -22,6 +22,16 @@
             "projectName": "ahuggins-testing",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringwebApplication<springweb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ahuggins.springweb.SpringwebApplication",
+            "projectName": "springweb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
