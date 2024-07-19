@@ -2,7 +2,13 @@ package com.ahuggins.spring_data_jpa_demo.models;
 
 import java.util.List;
 
+import org.springframework.cglib.beans.BeanCopier.Generator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="directors")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +33,7 @@ public class Director {
     private String lastName;
 
     @OneToMany(mappedBy="director", targetEntity = Movie.class)
+    @JsonBackReference
     private List<Movie> movies;
 
     public Director(){}
@@ -58,6 +66,14 @@ public class Director {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 
     @Override

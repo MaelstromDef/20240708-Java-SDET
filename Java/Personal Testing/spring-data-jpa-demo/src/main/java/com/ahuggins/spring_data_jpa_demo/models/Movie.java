@@ -1,6 +1,10 @@
 package com.ahuggins.spring_data_jpa_demo.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="movies")
@@ -28,7 +33,11 @@ public class Movie {
     private int rating;
 
     @ManyToOne
+    @Cascade(CascadeType.PERSIST)
     @JoinColumn(name="director_id")
+    @JsonIdentityReference(alwaysAsId = true)
+    //@JsonManagedReference
+    @NotNull
     private Director director;
     
     public Movie(){}
