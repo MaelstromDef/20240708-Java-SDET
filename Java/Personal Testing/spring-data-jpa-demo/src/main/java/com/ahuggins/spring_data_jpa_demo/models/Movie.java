@@ -34,19 +34,10 @@ public class Movie {
 
     @ManyToOne
     @Cascade(CascadeType.PERSIST)
+    @NotNull
     @JoinColumn(name="director_id")
     @JsonIdentityReference(alwaysAsId = true)
-    //@JsonManagedReference
-    @NotNull
     private Director director;
-    
-    public Movie(){}
-
-    public Movie(int id, String movie_title, int rating){
-        this.id = id;
-        this.movie_title = movie_title;
-        this.rating = rating;
-    }
 
     public int getId() {
         return id;

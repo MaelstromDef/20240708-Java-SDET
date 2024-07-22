@@ -36,17 +36,17 @@ public class MovieController {
         return "Hello World!";
     }
 
+    @GetMapping
+    public Iterable<Movie> findAllMovies(){
+        return service.findAll();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Movie> findMovieById(@PathVariable int id){
         Optional<Movie> optional = service.findById(id);
         return optional.isPresent() ? 
             new ResponseEntity<Movie>(optional.get(), HttpStatus.FOUND) : 
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping
-    public Iterable<Movie> findAllMovies(){
-        return service.findAll();
     }
 
     @PostMapping
@@ -56,13 +56,14 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable int id, @RequestBody Movie movie){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    @ResponseStatus(HttpStatus.OK)
+    public void updateMovie(@PathVariable int id, @RequestBody Movie movie){
+        service.update(id, movie);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Movie> deleteMovieById(@PathVariable int id){
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteMovieById(@PathVariable int id){
         service.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
