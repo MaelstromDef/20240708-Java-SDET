@@ -9,6 +9,16 @@
             "projectName": "spring-mvc",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-WarehousedemoApplication<warehousedemo>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ahuggins.warehousedemo.WarehousedemoApplication",
+            "projectName": "warehousedemo",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

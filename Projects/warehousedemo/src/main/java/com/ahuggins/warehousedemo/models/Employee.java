@@ -8,17 +8,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="employees")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length=50)
+    @Column(length=255)
     private String firstName;
 
-    @Column(length=50)
+    @Column(length=255)
     private String lastName;
 
     @ManyToMany(mappedBy = "employees")

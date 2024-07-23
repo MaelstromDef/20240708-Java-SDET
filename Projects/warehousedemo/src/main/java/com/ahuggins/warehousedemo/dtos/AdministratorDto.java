@@ -4,7 +4,6 @@ package com.ahuggins.warehousedemo.dtos;
 public class AdministratorDto {
     private int id;
     private String companyName;
-    private String jwt;
 
     public AdministratorDto(){}
     public AdministratorDto(int id, String companyName){
@@ -26,14 +25,6 @@ public class AdministratorDto {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getJwt() {
-        return jwt;
-    }
-
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
     }
 
     @Override

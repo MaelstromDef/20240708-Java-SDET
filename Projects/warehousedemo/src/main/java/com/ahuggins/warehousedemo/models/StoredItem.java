@@ -14,8 +14,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="item_locations")
 public class StoredItem {
     @EmbeddedId
     private StoredItemKey id;

@@ -10,17 +10,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="administrators")
 public class Administrator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length=50)
+    @Column(length=255)
     private String companyName;
 
-    @Column(length=50)
+    @Column(length=255)
     private String password;
 
     @OneToMany(mappedBy = "administrator", targetEntity = Warehouse.class)

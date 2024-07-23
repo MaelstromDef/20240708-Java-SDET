@@ -6,8 +6,6 @@ import com.ahuggins.warehousedemo.dtos.AdministratorDto;
 import com.ahuggins.warehousedemo.models.Administrator;
 import com.ahuggins.warehousedemo.services.AdminService;
 
-import io.jsonwebtoken.Jwts;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -33,22 +31,42 @@ public class AdminController {
         this.service = service;
     }
 
+    /**
+     * Returns all administrators currently in the database.
+     * 
+     * @return  A list of all administrators in the database.
+     * @apiNote This feature will be inaccessible within prod.
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
     public List<AdministratorDto> findAllAdministrators() {
         return service.getAllAdministrators();
     }
     
+    /**
+     * Retrieves a single administrator from the database.
+     * 
+     * @param id    The id of the administrator to retrieve.
+     * @return      The administrator or a not found HTTP status.
+     * @apiNote     This feature will be inaccessible within prod.
+     */
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public AdministratorDto findAdministratorById(@PathVariable int id) {
+    public ResponseEntity<AdministratorDto> findAdministratorById(@PathVariable int id) {
         Optional<AdministratorDto> adminDto = service.getAdministratorById(id);
-        return adminDto.isPresent() ? adminDto.get() : null;
+        return adminDto.isPresent() ? 
+            new ResponseEntity<AdministratorDto>(adminDto.get(), HttpStatus.FOUND) : 
+            new ResponseEntity<AdministratorDto>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping
-    public ResponseEntity<AdministratorDto> loginAdministrator(@RequestParam String companyName, @RequestBody String password){
-        throw new UnsupportedOperationException("loginAdministrator not implented.");
+    @PostMapping("/login")
+    public ResponseEntity<String> loginAdministrator(@RequestParam String authorization){
+        String[] credentials = authorization.split(":");
+        try {
+            String jwt = service.login(credentials[0], credentials[1]);
+            return new ResponseEntity<>(jwt, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping
