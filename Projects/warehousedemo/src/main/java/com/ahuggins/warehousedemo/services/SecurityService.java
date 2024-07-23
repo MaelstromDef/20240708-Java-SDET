@@ -1,6 +1,8 @@
 package com.ahuggins.warehousedemo.services;
 
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
@@ -14,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
  * Handles JWT generation and verification for the warehouse manager project.
  */
 @Service
-public final class JwtService {
+public final class SecurityService {
     /**
      * Gets a JWT that authorizes requests to retrieve/modify a company's stored data.
      * @param companyName   Name of the company to authorize.
@@ -37,5 +39,21 @@ public final class JwtService {
             .setExpiration(Date.from(Instant.now().plusSeconds(3600)))
             .signWith(Keys.hmacShaKeyFor(key))
             .compact();
+    }
+
+    /**
+     * Hashes a string.
+     * @param str   String to hash.
+     * @return      The hashed string.
+     * @throws Exception 
+     */
+    public static String hashString(String str) throws Exception{
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(str.getBytes("UTF-8"));
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (Exception e) {
+            throw new Exception("Failed to hash string.");
+        }
     }
 }

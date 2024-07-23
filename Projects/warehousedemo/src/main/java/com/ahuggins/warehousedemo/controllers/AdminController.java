@@ -59,10 +59,9 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginAdministrator(@RequestParam String authorization){
-        String[] credentials = authorization.split(":");
+    public ResponseEntity<String> loginAdministrator(@RequestBody Administrator admin){
         try {
-            String jwt = service.login(credentials[0], credentials[1]);
+            String jwt = service.login(admin);
             return new ResponseEntity<>(jwt, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -70,11 +69,11 @@ public class AdminController {
     }
 
     @PostMapping
-    public void createAdministrator(@RequestBody Administrator admin) {
-        AdministratorDto adminDto = new AdministratorDto();
-        admin.setCompanyName(admin.getCompanyName());
-
-        throw new UnsupportedOperationException("createAdministrator not implemented");
+    public ResponseEntity<AdministratorDto> createAdministrator(@RequestBody Administrator admin) {
+        Optional<AdministratorDto> optional = service.createAdministrator(admin);
+        return optional.isPresent() ? 
+            new ResponseEntity<>(optional.get(), HttpStatus.CREATED) :
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.ahuggins.warehousedemo.dtos.AdministratorDto;
@@ -38,12 +39,28 @@ public class AdminService {
         return repo.findById(id).map(mapper::toDto);
     }
     
-    public String login(String companyName, String password) throws Exception{
+    public String login(Administrator admin) throws Exception{
+        String companyName=admin.getCompanyName(), password=SecurityService.hashString(admin.getPassword());
+
         // Find and verify admin
-        Administrator admin = repo.findByCompanyNameAndPassword(companyName, password);
-        if(admin == null) throw new Exception("Credentials not found.");
+        List<Administrator> fromRepo = repo.findByCompanyNameAndPassword(companyName, password);
+        if(fromRepo.isEmpty()) throw new Exception("Credentials not found");
 
         // Create JWT
-        return JwtService.getCompanyJwt(companyName);
+        return SecurityService.getCompanyJwt(companyName);
+    }
+
+    public Optional<AdministratorDto> createAdministrator(Administrator admin) {
+        if(repo.findByCompanyName(admin.getCompanyName()).isEmpty()){
+            try {
+                String companyName=admin.getCompanyName(), password=SecurityService.hashString(admin.getPassword());
+                admin.setPassword(password);
+                return Optional.of(mapper.toDto(repo.save(admin)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return Optional.empty();
     }
 }
