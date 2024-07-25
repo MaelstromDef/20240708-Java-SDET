@@ -47,7 +47,7 @@ public class AdminService {
         if(fromRepo.isEmpty()) throw new Exception("Credentials not found");
 
         // Create JWT
-        return SecurityService.getCompanyJwt(companyName);
+        return SecurityService.getJwt(companyName);
     }
 
     public Optional<AdministratorDto> createAdministrator(Administrator admin) {
