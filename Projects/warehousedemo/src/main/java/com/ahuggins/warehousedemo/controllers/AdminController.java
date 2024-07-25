@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ahuggins.warehousedemo.dtos.AdministratorDto;
 import com.ahuggins.warehousedemo.models.Administrator;
 import com.ahuggins.warehousedemo.services.AdminService;
-import com.ahuggins.warehousedemo.services.SecurityService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -78,14 +78,23 @@ public class AdminController {
 
     @PutMapping
     public ResponseEntity<AdministratorDto> updateAdministrator(@RequestBody Administrator admin, @RequestHeader String authorization){
-        if(!SecurityService.validate(authorization, admin.getCompanyName())) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
-        throw new UnsupportedOperationException("updateAdministrator not implemented.");
+        try {
+            Optional<AdministratorDto> dto = service.updateAdministrator(authorization, admin);
+            return dto.isPresent() ? 
+                new ResponseEntity<>(dto.get(), HttpStatus.valueOf(204)) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalAccessException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAdministrator(){
-        throw new UnsupportedOperationException("deleteAdministrator not implemented.");
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteAdministrator(@PathVariable int id, @RequestParam String companyName, @RequestHeader String authorization){
+        try{
+            service.deleteAdministrator(authorization, id, companyName);
+        }catch(IllegalAccessException e){
+            e.printStackTrace();
+        }
     }
-
 }
