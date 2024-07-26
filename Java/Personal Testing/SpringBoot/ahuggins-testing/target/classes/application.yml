@@ -1,0 +1,13 @@
+spring:
+    application:
+        name: ahuggins-testing
+        admin:
+            enabled: false
+    config:
+            name: application
+    profiles:
+        include:
+            colors
+
+server:
+    port: 8282
