@@ -31,6 +31,10 @@ public class Administrator {
 
     public Administrator(){}
 
+    public Administrator(int id){
+        this.id = id;
+    }
+
     public Administrator(int id, String companyName){
         this.id = id;
         this.companyName = companyName;

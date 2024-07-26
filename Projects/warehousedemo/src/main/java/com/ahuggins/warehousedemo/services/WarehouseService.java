@@ -23,8 +23,16 @@ public class WarehouseService {
         return repo.findAll();
     }
 
-    public Optional<Warehouse> getWarehouseById(int id){
-        return repo.findById(id);
+    public Optional<Warehouse> getWarehouseById(int id, int adminId){
+        return Optional.empty();//repo.findByIdAndAdministrator(id, new Administrator(id));
+    }
+
+    public Optional<Warehouse> getWarehouseByName(String name, int adminId){
+        return Optional.empty();//repo.findByNameAndAdministrator(name, new Administrator(adminId));
+    }
+
+    public List<Warehouse> getWarehouseByLocation(String location, int adminId){
+        return repo.findByLocationAndAdministrator(location, new Administrator(adminId));
     }
 
     public Optional<Warehouse> createWarehouse(Warehouse warehouse) {
@@ -35,20 +43,7 @@ public class WarehouseService {
         return Optional.empty();
     }
 
-    // public Optional<AdministratorDto> updateWarehouse(Warehouse admin) throws IllegalAccessException{
-    //     if(!SecurityService.validateAdmin(authorization, admin)) throw new IllegalAccessException("JWT not authorized for this administrator.");
-
-    //     if(repo.findById(admin.getId()).isPresent()){
-    //         return Optional.of(mapper.toDto(repo.save(admin)));
-    //     }
-
-    //     return Optional.empty();
-    // }
-
-    // public void deleteAdministrator(String authorization, int id, String companyName) throws IllegalAccessException{
-    //     Administrator admin = new Administrator(id, companyName);
-    //     if(!SecurityService.validateAdmin(authorization, admin)) throw new IllegalAccessException("JWT not authorized for this administrator.");
-
-    //     repo.deleteById(id);
-    // }
+    public Optional<Warehouse> updateWarehouse(Warehouse warehouse){
+        throw new UnsupportedOperationException();
+    }
 }

@@ -50,6 +50,16 @@ public class Warehouse {
     @OneToMany(mappedBy = "warehouse")
     private List<StoredItem> storedItems;
 
+    public Warehouse() {
+    }
+
+    public Warehouse(int id, String name, String location, @Min(1) int size) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.size = size;
+    }
+
     public int getId() {
         return id;
     }

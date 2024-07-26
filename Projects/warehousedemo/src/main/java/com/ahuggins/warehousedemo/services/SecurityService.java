@@ -25,6 +25,9 @@ import io.jsonwebtoken.security.Keys;
 public final class SecurityService {
     private static AdminMapper mapper;
 
+    public static final String ID_CLAIM = "id";
+    public static final String C_NAME_CLAIM = "companyName";
+
     public SecurityService(AdminMapper mapper){
         if(SecurityService.mapper == null) SecurityService.mapper = mapper;
     }
@@ -38,8 +41,8 @@ public final class SecurityService {
     public static String getJwt(AdministratorDto admin) throws Exception{
         // Build JWT
         return Jwts.builder()
-            .claim("id", admin.getId())
-            .claim("companyName", admin.getCompanyName())
+            .claim(ID_CLAIM, admin.getId())
+            .claim(C_NAME_CLAIM, admin.getCompanyName())
             .setIssuedAt(Date.from(Instant.now()))
             .setExpiration(Date.from(Instant.now().plusSeconds(3600)))
             .signWith(getSigningKey())
@@ -72,8 +75,8 @@ public final class SecurityService {
     public static boolean validateAdmin(String jwt, AdministratorDto admin) {
         try {
             Jwts.parserBuilder()
-                .require("id", admin.getId())
-                .require("companyName", admin.getCompanyName())
+                .require(ID_CLAIM, admin.getId())
+                .require(C_NAME_CLAIM, admin.getCompanyName())
                 .setSigningKey(getSigningKey())
                 .build()
                 .parse(jwt);
@@ -111,6 +114,10 @@ public final class SecurityService {
         }
 
         return true;
+    }
+
+    public static <T> T getClaim(String jwt, String claim, Class<T> classType){
+        return Jwts.claims().get(claim, classType);
     }
 
     public static String getClaim(String jwt, String claim){
