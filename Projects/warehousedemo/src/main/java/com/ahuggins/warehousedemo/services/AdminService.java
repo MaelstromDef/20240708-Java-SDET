@@ -55,7 +55,7 @@ public class AdminService {
     public Optional<AdministratorDto> createAdministrator(Administrator admin) {
         if(repo.findByCompanyName(admin.getCompanyName()).isEmpty()){
             try {
-                String companyName=admin.getCompanyName(), password=SecurityService.hashString(admin.getPassword());
+                String password=SecurityService.hashString(admin.getPassword());
                 admin.setPassword(password);
                 return Optional.of(mapper.toDto(repo.save(admin)));
             } catch (Exception e) {

@@ -113,6 +113,10 @@ public final class SecurityService {
         return true;
     }
 
+    public static String getClaim(String jwt, String claim){
+        return Jwts.claims().get(claim, String.class);
+    }
+
     private static SecretKey getSigningKey() throws Exception{
         // Retrieve key from env and encrypt
         byte[] key;

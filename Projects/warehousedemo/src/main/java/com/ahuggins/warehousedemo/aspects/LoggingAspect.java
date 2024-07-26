@@ -22,17 +22,14 @@ public class LoggingAspect {
     @Pointcut("within(com.ahuggins.warehousedemo.controllers.AdminController)")
     public void checkFindAdmins(){}
 
-    @Pointcut("execution(public * com.ahuggins.warehousedemo.controllers.AdminController.*(..))")
+    @Pointcut("")
     public void allAdminControllerMethods(){}
 
-    @Before("allAdminControllerMethods()")
+    @Before("execution(public * com.ahuggins.warehousedemo.controllers.AdminController.find*(..))")
     public void request(JoinPoint joinPoint) throws Exception{
-        logger.debug("\n\nDANGEROUS METHOD\n\n");
-        
-
-        // String flag = System.getenv("allowFindAdmin");
-        // logger.debug("CURRENT FLAG" + flag);
-        // if(flag.isEmpty() || flag.equals("prod")) throw new UnsupportedOperationException("Find admininstrator operations no longer allowed");
+        String flag = System.getenv("allowFindAdmin");
+        logger.debug("CURRENT FLAG " + flag);
+        if(flag.isEmpty() || flag.equals("prod")) throw new UnsupportedOperationException("Find admininstrator operations no longer allowed");
     }
 
     @Pointcut("execution(public ResponseEntity<AdministratorDto> com.ahuggins.warehousedemo.controllers.AdminController.findAdministratorById(int))")
