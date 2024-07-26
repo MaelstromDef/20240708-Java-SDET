@@ -2,7 +2,7 @@
 // import Cat from "./Components/Cat"
 // import Dog from "./Components/Dog"
 
-import {Cat, Dog, Home} from "./Components"
+import {Cat, Dog, Home, Reference} from "./Components"
 
 import { useState } from "react"
 import {BrowserRouter, Routes, Route, Link, Navigate} from 'react-router-dom'
@@ -11,7 +11,6 @@ import Navbar from "./Components/Navigation/Navbar"
 function App() {
   return (
     <>
-      
       <BrowserRouter>
       <Navbar/>
 
@@ -22,6 +21,7 @@ function App() {
           <Route path="*" element={<Navigate to='/'/>}/>
         </Routes>
       </BrowserRouter>
+      <Reference/>
     </>
   )
 }
