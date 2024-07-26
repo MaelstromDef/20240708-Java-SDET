@@ -4,14 +4,25 @@
 
 import {Cat, Dog, Home, Reference} from "./Components"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {BrowserRouter, Routes, Route, Link, Navigate} from 'react-router-dom'
 import Navbar from "./Components/Navigation/Navbar"
 
 function App() {
+  const url = "";
+
+  useEffect(()=>{
+    fetch(url).
+      then((data) => data.json())
+      .then()
+      .catch(err => {alert(err); console.error(err);});
+  })
+
   return (
     <>
-      <BrowserRouter>
+
+
+      {/* <BrowserRouter>
       <Navbar/>
 
         <Routes>
@@ -21,7 +32,7 @@ function App() {
           <Route path="*" element={<Navigate to='/'/>}/>
         </Routes>
       </BrowserRouter>
-      <Reference/>
+      <Reference/> */}
     </>
   )
 }
