@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 public interface WarehouseRepository extends JpaRepository<Warehouse, Integer> {
-    List<Warehouse> findByIdAndAdministrator(int id, Administrator administrator);
+    Optional<Warehouse> findByIdAndAdministrator(int id, Administrator administrator);
 
     List<Warehouse> findByAdministrator(Administrator administrator);
 

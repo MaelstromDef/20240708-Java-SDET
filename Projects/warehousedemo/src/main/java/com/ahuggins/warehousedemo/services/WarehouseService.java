@@ -19,12 +19,13 @@ public class WarehouseService {
         this.repo = repo;
     }
 
-    public List<Warehouse> getAllWarehouses(){
-        return repo.findAll();
+    public List<Warehouse> getAllWarehouses(int adminId){
+        return repo.findByAdministrator(new Administrator(adminId));
     }
 
     public Optional<Warehouse> getWarehouseById(int id, int adminId){
-        return Optional.empty();//repo.findByIdAndAdministrator(id, new Administrator(id));
+        return repo.findByIdAndAdministrator(id, new Administrator(id));
+        
     }
 
     public Optional<Warehouse> getWarehouseByName(String name, int adminId){

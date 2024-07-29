@@ -66,8 +66,9 @@ public class AdminService {
         return Optional.empty();
     }
 
-    public Optional<AdministratorDto> updateAdministrator(String authorization, Administrator admin) throws IllegalAccessException{
-        if(!SecurityService.validateAdmin(authorization, admin)) throw new IllegalAccessException("JWT not authorized for this administrator.");
+    public Optional<AdministratorDto> updateAdministrator(int adminId, Administrator admin) throws IllegalAccessException{
+        //if(adminId != admin.getId()) throw new IllegalAccessException("Mismatched administrator ID.");
+        admin.setId(adminId);
 
         if(repo.findById(admin.getId()).isPresent()){
             return Optional.of(mapper.toDto(repo.save(admin)));
@@ -76,10 +77,7 @@ public class AdminService {
         return Optional.empty();
     }
 
-    public void deleteAdministrator(String authorization, int id, String companyName) throws IllegalAccessException{
-        Administrator admin = new Administrator(id, companyName);
-        if(!SecurityService.validateAdmin(authorization, admin)) throw new IllegalAccessException("JWT not authorized for this administrator.");
-
+    public void deleteAdministrator(int id){
         repo.deleteById(id);
     }
 }

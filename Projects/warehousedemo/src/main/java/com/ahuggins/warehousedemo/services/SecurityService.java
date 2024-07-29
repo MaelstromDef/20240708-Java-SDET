@@ -15,6 +15,7 @@ import com.ahuggins.warehousedemo.dtos.AdministratorDto;
 import com.ahuggins.warehousedemo.mappers.AdminMapper;
 import com.ahuggins.warehousedemo.models.Administrator;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -117,11 +118,22 @@ public final class SecurityService {
     }
 
     public static <T> T getClaim(String jwt, String claim, Class<T> classType){
-        return Jwts.claims().get(claim, classType);
+        try {
+            Claims claims = (Claims) Jwts.parserBuilder()
+                .setSigningKey(SecurityService.getSigningKey())
+                .build()
+                .parse(jwt).getBody();
+            return claims.get(claim, classType);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static String getClaim(String jwt, String claim){
-        return Jwts.claims().get(claim, String.class);
+        return getClaim(jwt, claim, String.class);
     }
 
     private static SecretKey getSigningKey() throws Exception{

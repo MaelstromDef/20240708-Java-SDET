@@ -1,11 +1,6 @@
 package com.ahuggins.warehousedemo.controllers;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import com.ahuggins.warehousedemo.dtos.AdministratorDto;
-import com.ahuggins.warehousedemo.models.Administrator;
-import com.ahuggins.warehousedemo.services.AdminService;
-
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,16 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.ahuggins.warehousedemo.dtos.AdministratorDto;
+import com.ahuggins.warehousedemo.models.Administrator;
+import com.ahuggins.warehousedemo.services.AdminService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
-@RequestMapping("/admins")
 public class AdminController {
     private AdminService service;
 
@@ -31,70 +32,41 @@ public class AdminController {
         this.service = service;
     }
 
-    /**
-     * Returns all administrators currently in the database.
-     * 
-     * @return  A list of all administrators in the database.
-     * @apiNote This feature will be inaccessible within prod.
-     */
     @GetMapping
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<AdministratorDto> findAllAdministrators() {
+    public List<AdministratorDto> getAdministrators() {
         return service.getAllAdministrators();
     }
     
-    /**
-     * Retrieves a single administrator from the database.
-     * 
-     * @param id    The id of the administrator to retrieve.
-     * @return      The administrator or a not found HTTP status.
-     * @apiNote     This feature will be inaccessible within prod.
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<AdministratorDto> findAdministratorById(@PathVariable int id) {
-        Optional<AdministratorDto> adminDto = service.getAdministratorById(id);
-        return adminDto.isPresent() ? 
-            new ResponseEntity<AdministratorDto>(adminDto.get(), HttpStatus.FOUND) : 
-            new ResponseEntity<AdministratorDto>(HttpStatus.NOT_FOUND);
-    }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginAdministrator(@RequestBody Administrator admin){
+    @GetMapping("/login")
+    public String login(@RequestBody Administrator admin){
         try {
-            String jwt = service.login(admin);
-            return new ResponseEntity<>(jwt, HttpStatus.OK);
+            return service.login(admin);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @PostMapping
-    public ResponseEntity<AdministratorDto> createAdministrator(@RequestBody Administrator admin) {
-        Optional<AdministratorDto> optional = service.createAdministrator(admin);
-        return optional.isPresent() ? 
-            new ResponseEntity<>(optional.get(), HttpStatus.CREATED) :
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @PostMapping("/signup")
+    public AdministratorDto signup(@RequestBody Administrator admin){
+        Optional<AdministratorDto> dto = service.createAdministrator(admin);
+
+        if(dto.isPresent()) return dto.get();
+        throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
     @PutMapping
-    public ResponseEntity<AdministratorDto> updateAdministrator(@RequestBody Administrator admin, @RequestHeader String authorization){
-        try {
-            Optional<AdministratorDto> dto = service.updateAdministrator(authorization, admin);
-            return dto.isPresent() ? 
-                new ResponseEntity<>(dto.get(), HttpStatus.valueOf(204)) :
-                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (IllegalAccessException e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public AdministratorDto updateAccount(@RequestAttribute int adminId, @RequestBody Administrator admin) throws IllegalAccessException{
+        Optional<AdministratorDto> dto = service.updateAdministrator(adminId, admin);
+
+        if(dto.isPresent()) return dto.get();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteAdministrator(@PathVariable int id, @RequestParam String companyName, @RequestHeader String authorization){
-        try{
-            service.deleteAdministrator(authorization, id, companyName);
-        }catch(IllegalAccessException e){
-            e.printStackTrace();
-        }
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAccount(@RequestAttribute int adminId){
+        service.deleteAdministrator(adminId);
     }
 }
