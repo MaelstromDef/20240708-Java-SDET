@@ -27,6 +27,8 @@ public class AdminController {
         this.service = service;
     }
 
+    // GET METHODS
+
     @GetMapping
     public List<AdministratorDto> getAdministrators() {
         return service.getAllAdministrators();
@@ -42,6 +44,8 @@ public class AdminController {
         }
     }
 
+    // POST METHODS
+
     @PostMapping("/signup")
     public AdministratorDto signup(@RequestBody Administrator admin){
         Optional<AdministratorDto> dto = service.createAdministrator(admin);
@@ -49,6 +53,8 @@ public class AdminController {
         if(dto.isPresent()) return dto.get();
         throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
+
+    // PUT METHODS
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -60,6 +66,8 @@ public class AdminController {
         if(dto.isPresent()) return dto.get();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    // DELETE METHODS
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)

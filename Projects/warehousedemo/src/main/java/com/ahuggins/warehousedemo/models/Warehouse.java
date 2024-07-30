@@ -1,6 +1,5 @@
 package com.ahuggins.warehousedemo.models;
 
-import java.util.Hashtable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -11,8 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -96,7 +93,7 @@ public class Warehouse {
     public void setAdministrator(Administrator administrator) {
         this.administrator = administrator;
     }
-    
+
     public List<StoredItem> getStoredItems() {
         return storedItems;
     }

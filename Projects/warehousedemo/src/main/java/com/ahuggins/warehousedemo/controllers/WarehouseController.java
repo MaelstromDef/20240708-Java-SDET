@@ -33,6 +33,8 @@ public class WarehouseController {
         this.service = service;
     }
 
+    // GET METHODS
+
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
     public List<Warehouse> getAllWarehouses(@RequestAttribute int adminId){
@@ -66,6 +68,8 @@ public class WarehouseController {
         return warehouses;
     }
 
+    // POST METHODS
+
     @PostMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.CREATED)
     public WarehouseDto createWarehouse(@RequestAttribute int adminId, @RequestBody Warehouse warehouse){
@@ -75,6 +79,8 @@ public class WarehouseController {
         throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
+    // PUT METHODS
+
     @PutMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.OK)
     public WarehouseDto updateWarehouse(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestBody Warehouse warehouse){
@@ -83,6 +89,8 @@ public class WarehouseController {
         if(optional.isPresent()) return optional.get();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    // DELETE METHODS
 
     @DeleteMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.OK)
