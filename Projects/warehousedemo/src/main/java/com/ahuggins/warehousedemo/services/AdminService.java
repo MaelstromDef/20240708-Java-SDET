@@ -66,9 +66,14 @@ public class AdminService {
         return Optional.empty();
     }
 
-    public Optional<AdministratorDto> updateAdministrator(int adminId, Administrator admin) throws IllegalAccessException{
+    public Optional<AdministratorDto> updateAdministrator(int adminId, Administrator admin) throws IllegalAccessException {
         //if(adminId != admin.getId()) throw new IllegalAccessException("Mismatched administrator ID.");
         admin.setId(adminId);
+        try{
+            admin.setPassword(SecurityService.hashString(admin.getPassword()));
+        }catch(Exception e){
+            throw new IllegalAccessException("Password cannot be changed.");
+        }
 
         if(repo.findById(admin.getId()).isPresent()){
             return Optional.of(mapper.toDto(repo.save(admin)));

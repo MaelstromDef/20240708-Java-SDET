@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.ahuggins.warehousedemo.dtos.AdministratorDto;
+import com.ahuggins.warehousedemo.dtos.WarehouseDto;
+import com.ahuggins.warehousedemo.mappers.WarehouseMapper;
 import com.ahuggins.warehousedemo.models.Administrator;
 import com.ahuggins.warehousedemo.models.Warehouse;
 import com.ahuggins.warehousedemo.repositories.WarehouseRepository;
@@ -14,37 +16,49 @@ import com.ahuggins.warehousedemo.repositories.WarehouseRepository;
 @Service
 public class WarehouseService {
     private WarehouseRepository repo;
+    private WarehouseMapper mapper;
 
-    public WarehouseService(WarehouseRepository repo){
+    public WarehouseService(WarehouseRepository repo, WarehouseMapper mapper){
         this.repo = repo;
+        this.mapper = mapper;
     }
 
     public List<Warehouse> getAllWarehouses(int adminId){
         return repo.findByAdministrator(new Administrator(adminId));
     }
 
-    public Optional<Warehouse> getWarehouseById(int id, int adminId){
+    public Optional<Warehouse> getWarehouseById(int adminId, int id){
         return repo.findByIdAndAdministrator(id, new Administrator(id));
         
     }
 
-    public Optional<Warehouse> getWarehouseByName(String name, int adminId){
-        return Optional.empty();//repo.findByNameAndAdministrator(name, new Administrator(adminId));
+    public Optional<Warehouse> getWarehouseByName(int adminId, String name){
+        return repo.findByNameAndAdministrator(name, new Administrator(adminId));
     }
 
-    public List<Warehouse> getWarehouseByLocation(String location, int adminId){
+    public List<Warehouse> getWarehouseByLocation(int adminId, String location){
         return repo.findByLocationAndAdministrator(location, new Administrator(adminId));
     }
 
-    public Optional<Warehouse> createWarehouse(Warehouse warehouse) {
-        if(repo.findById(warehouse.getId()).isEmpty()){
-            return Optional.of(repo.save(warehouse));
+    public Optional<WarehouseDto> createWarehouse(int adminId, Warehouse warehouse) {
+        if(repo.findByIdAndAdministrator(warehouse.getId(), new Administrator(adminId)).isEmpty()){
+            return Optional.of(mapper.toDto(repo.save(warehouse)));
         }
         
         return Optional.empty();
     }
 
-    public Optional<Warehouse> updateWarehouse(Warehouse warehouse){
-        throw new UnsupportedOperationException();
+    public Optional<WarehouseDto> updateWarehouse(int adminId, int warehouseId, Warehouse warehouse){
+        if(repo.findByIdAndAdministrator(warehouseId, new Administrator(adminId)).isPresent()){
+            warehouse.setId(warehouseId);
+            return Optional.of(mapper.toDto(repo.save(warehouse)));
+        }
+        
+        return Optional.empty();
+    }
+
+    public void deleteWarehouse(int adminId, int warehouseId){
+        if(repo.findByIdAndAdministrator(warehouseId, new Administrator(adminId)).isEmpty()) return;    // Remove possibility of cross-admin deletions.
+        repo.deleteById(Integer.valueOf(warehouseId));
     }
 }

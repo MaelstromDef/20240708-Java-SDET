@@ -5,7 +5,7 @@ DROP TABLE administrators;
 CREATE TABLE administrators(
 	id BIGSERIAL PRIMARY KEY,
 	company_name VARCHAR(255),
-	password VARCHAR(255),
+	password VARCHAR(255)
 );
 
 ALTER TABLE administrators

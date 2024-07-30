@@ -13,8 +13,8 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Integer> {
 
     List<Warehouse> findByAdministrator(Administrator administrator);
 
-    List<Warehouse> findByName(String name);
-    List<Warehouse> findByNameAndAdministrator(String name, Administrator administrator);
+    Optional<Warehouse> findByName(String name);
+    Optional<Warehouse> findByNameAndAdministrator(String name, Administrator administrator);
 
     List<Warehouse> findByLocation(String location);
     List<Warehouse> findByLocationAndAdministrator(String location, Administrator administrator);
