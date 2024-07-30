@@ -16,6 +16,12 @@ public class StoredItemKey implements Serializable{
     @NotNull
     private int warehouseId;
 
+    public StoredItemKey(){}
+    public StoredItemKey(int itemId, int warehouseId){
+        this.itemId = itemId;
+        this.warehouseId = warehouseId;
+    }
+
     public int getItemId() {
         return itemId;
     }

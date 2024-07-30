@@ -26,6 +26,11 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<StoredItem> storedItems;
 
+    public Item(){}
+    public Item(int id){
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
