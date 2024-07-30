@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name="item_locations")
@@ -32,6 +33,7 @@ public class StoredItem {
     @JoinColumn(name="warehouse_id")
     private Warehouse warehouse;
 
+    @Min(value = 1)
     int quantity;
 
     public StoredItemKey getId() {

@@ -11,18 +11,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="administrators")
 public class Administrator {
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(length=255)
+    @NotNull
     private String companyName;
 
     @Column(length=255)
+    @NotNull
     private String password;
 
     @OneToMany(mappedBy = "administrator", targetEntity = Warehouse.class)

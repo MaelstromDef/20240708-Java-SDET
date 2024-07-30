@@ -4,13 +4,16 @@ import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class StoredItemKey implements Serializable{
     @Column(name="item_id")
+    @NotNull
     private int itemId;
 
     @Column(name="warehouse_id")
+    @NotNull
     private int warehouseId;
 
     public int getItemId() {

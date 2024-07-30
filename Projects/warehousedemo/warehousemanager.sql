@@ -14,30 +14,6 @@ ALTER TABLE administrators
 
 SELECT * FROM administrators;
 
--- EMPLOYEE LOCATIONS
-
-DROP TABLE employee_locations;
-
-CREATE TABLE employee_locations(
-	id BIGSERIAL PRIMARY KEY,
-	employee_id integer,
-	warehouse_id integer
-);
-
--- EMPLOYEES
-
-DROP TABLE employees;
-
-CREATE TABLE employees(
-	id BIGSERIAL PRIMARY KEY,
-	first_name VARCHAR(255),
-	last_name VARCHAR(255)
-);
-
-ALTER TABLE employees
-	ALTER COLUMN first_name TYPE VARCHAR(255),
-	ALTER COLUMN last_name TYPE VARCHAR(255);
-
 -- ITEM_LOCATIONS
 
 DROP TABLE item_locations;

@@ -29,7 +29,6 @@ public class WarehouseService {
 
     public Optional<Warehouse> getWarehouseById(int adminId, int id){
         return repo.findByIdAndAdministrator(id, new Administrator(id));
-        
     }
 
     public Optional<Warehouse> getWarehouseByName(int adminId, String name){

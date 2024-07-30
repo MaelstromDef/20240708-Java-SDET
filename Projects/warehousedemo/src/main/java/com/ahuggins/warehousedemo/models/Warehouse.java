@@ -23,13 +23,16 @@ import jakarta.validation.constraints.NotNull;
 @Table(name="warehouses")
 public class Warehouse {
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(length=255)
+    @NotNull
     private String name;
 
     @Column(length=255)
+    @NotNull
     private String location;
 
     @Min(1)
@@ -40,12 +43,6 @@ public class Warehouse {
     @JoinColumn(name = "admin_id")
     @JsonIdentityReference(alwaysAsId = true)
     private Administrator administrator;
-
-    @ManyToMany
-    @JoinTable(name="employee_locations",
-        joinColumns = @JoinColumn(name="warehouse_id"),
-        inverseJoinColumns = @JoinColumn(name="employee_id"))
-    private List<Employee> employees;
 
     @OneToMany(mappedBy = "warehouse")
     private List<StoredItem> storedItems;
@@ -99,15 +96,7 @@ public class Warehouse {
     public void setAdministrator(Administrator administrator) {
         this.administrator = administrator;
     }
-
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
+    
     public List<StoredItem> getStoredItems() {
         return storedItems;
     }
