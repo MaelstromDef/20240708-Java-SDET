@@ -24,13 +24,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGeneralException(Exception e){
-        String str = "";
-        for(StackTraceElement elem : e.getStackTrace()) str += elem.toString() + "\n";
-        logger.error(e.getMessage() + "\n" + e.getCause() + "\n" + str);
-        e.printStackTrace();
+    // @ExceptionHandler(Exception.class)
+    // public ResponseEntity<Object> handleGeneralException(Exception e){
+    //     String str = "";
+    //     for(StackTraceElement elem : e.getStackTrace()) str += elem.toString() + "\n";
+    //     logger.error(e.getMessage() + "\n" + e.getCause() + "\n" + str);
+    //     e.printStackTrace();
 
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 }

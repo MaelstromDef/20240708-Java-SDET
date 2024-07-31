@@ -3,6 +3,10 @@ package com.ahuggins.warehousedemo.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.ahuggins.warehousedemo.models.Administrator;
@@ -10,14 +14,19 @@ import com.ahuggins.warehousedemo.models.Item;
 import com.ahuggins.warehousedemo.models.StoredItem;
 import com.ahuggins.warehousedemo.models.StoredItemKey;
 import com.ahuggins.warehousedemo.models.Warehouse;
+import com.ahuggins.warehousedemo.repositories.ItemRepository;
 import com.ahuggins.warehousedemo.repositories.StoredItemRepository;
 
 @Service
 public class ItemService {
-    private StoredItemRepository repo;
+    Logger logger = LoggerFactory.getLogger(getClass());    // DELETE ME
 
-    public ItemService(StoredItemRepository repo){
-        this.repo = repo;
+    private StoredItemRepository repo;
+    private ItemRepository itemRepo;
+
+    public ItemService(StoredItemRepository storeageRepo, ItemRepository itemRepo){
+        this.repo = storeageRepo;
+        this.itemRepo = itemRepo;
     }
 
     public List<StoredItem> getWarehouseItems(int adminId, int warehouseId) {
@@ -49,38 +58,54 @@ public class ItemService {
         List<StoredItem> items = repo.findByItemAndWarehouse(item, warehouse);
 
         // Handle returns
-        if(items.size() == 0) return Optional.empty();
+        if(items.isEmpty()) return Optional.empty();
         return Optional.of(items.get(0).getItem());
     }
 
-    public Optional<StoredItem> addItemToWarehouse(int adminId, int warehouseId, StoredItem item) {
-        // Construct query components
-        Warehouse warehouse = new Warehouse();
-        warehouse.setAdministrator(new Administrator(adminId));
-        warehouse.setId(warehouseId);
-
-        // Ensure does not exist
-        if(repo.findByItemAndWarehouse(item.getItem(), warehouse).contains(item)) return Optional.empty();
-
-        // Add to database
-        item.setWarehouse(warehouse);
-        return Optional.of(repo.save(item));
-    }
-
-    public Optional<StoredItem> updateWarehouseItem(int adminId, int warehouseId, int itemId, StoredItem item) {
-        // Construct query components
-        Warehouse warehouse = new Warehouse();
-        warehouse.setAdministrator(new Administrator(adminId));
-        warehouse.setId(warehouseId);
-
-        // Ensure exists
-        if(repo.findByItemAndWarehouse(item.getItem(), warehouse).contains(item)) {
-            // Update
-            item.setWarehouse(warehouse);
-            return Optional.of(repo.save(item));
+    public Optional<StoredItem> addItemToWarehouse(int adminId, int warehouseId, StoredItem storedItem) {
+        // Ensure that the item entity exists
+        Optional<Item> fromRepo = itemRepo.findByName(storedItem.getItem().getName());
+        if(fromRepo.isEmpty()) {
+            fromRepo = Optional.of(itemRepo.save(storedItem.getItem()));
         }
 
-        return Optional.empty();
+        // Ensure that the warehouse does not already have this item
+        StoredItemKey key = new StoredItemKey(fromRepo.get().getId(), warehouseId);
+        if(repo.findById(key).isPresent()) return Optional.empty();
+
+        // Construct stored item warehouse
+        Warehouse warehouse = new Warehouse();
+        warehouse.setAdministrator(new Administrator(adminId));
+        warehouse.setId(warehouseId);
+
+        // Add the item to the database
+        storedItem.setId(key);
+        storedItem.setItem(fromRepo.get());
+        storedItem.setWarehouse(warehouse);
+        return Optional.of(repo.save(storedItem));
+    }
+
+    public Optional<StoredItem> updateWarehouseItem(int adminId, int warehouseId, StoredItem storedItem) {
+        // Ensure that the item entity exists
+        Optional<Item> fromRepo = itemRepo.findByName(storedItem.getItem().getName());
+        if(fromRepo.isEmpty()) {
+            fromRepo = Optional.of(itemRepo.save(storedItem.getItem()));
+        }
+
+        // Ensure that the warehouse has this item
+        StoredItemKey key = new StoredItemKey(fromRepo.get().getId(), warehouseId);
+        if(repo.findById(key).isEmpty()) return Optional.empty();
+
+        // Construct stored item warehouse
+        Warehouse warehouse = new Warehouse();
+        warehouse.setAdministrator(new Administrator(adminId));
+        warehouse.setId(warehouseId);
+
+        // Add the item to the database
+        storedItem.setId(key);
+        storedItem.setItem(fromRepo.get());
+        storedItem.setWarehouse(warehouse);
+        return Optional.of(repo.save(storedItem));
     }
 
     public void removeItemFromWarehouse(int adminId, int warehouseId, int itemId) throws IllegalAccessException {
@@ -96,6 +121,5 @@ public class ItemService {
         // Remove from database
         StoredItemKey itemKey = new StoredItemKey(itemId, warehouseId);
         repo.deleteById(itemKey);
-    }
-    
+    }   
 }

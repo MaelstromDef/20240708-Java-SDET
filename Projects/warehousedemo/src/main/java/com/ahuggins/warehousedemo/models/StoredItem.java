@@ -9,8 +9,17 @@
 
 package com.ahuggins.warehousedemo.models;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -21,6 +30,7 @@ import jakarta.validation.constraints.Min;
 @Table(name="item_locations")
 public class StoredItem {
     @EmbeddedId
+    @JsonIgnore
     private StoredItemKey id;
 
     @ManyToOne
@@ -31,6 +41,7 @@ public class StoredItem {
     @ManyToOne
     @MapsId("warehouseId")
     @JoinColumn(name="warehouse_id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Warehouse warehouse;
 
     @Min(value = 1)

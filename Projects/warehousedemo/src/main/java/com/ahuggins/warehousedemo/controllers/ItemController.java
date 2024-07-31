@@ -68,9 +68,9 @@ public class ItemController {
 
     // PUT METHODS
 
-    @PutMapping("/{itemId}")
-    public StoredItem updateWarehouseItem(@RequestAttribute int adminId, @PathVariable int warehouseId, @PathVariable int itemId, @RequestBody StoredItem item){
-        Optional<StoredItem> optional = service.updateWarehouseItem(adminId, warehouseId, itemId, item);
+    @PutMapping
+    public StoredItem updateWarehouseItem(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestBody StoredItem item){
+        Optional<StoredItem> optional = service.updateWarehouseItem(adminId, warehouseId, item);
 
         if(optional.isPresent()) return optional.get();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

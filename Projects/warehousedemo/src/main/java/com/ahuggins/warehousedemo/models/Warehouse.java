@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +25,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="warehouses")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouse {
     @Id
     @NotNull
@@ -42,11 +46,11 @@ public class Warehouse {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "admin_id")
-    //@JsonManagedReference
     @JsonIdentityReference(alwaysAsId = true)
     private Administrator administrator;
 
     @OneToMany(mappedBy = "warehouse")
+    @JsonIgnore
     private List<StoredItem> storedItems;
 
     public Warehouse() {

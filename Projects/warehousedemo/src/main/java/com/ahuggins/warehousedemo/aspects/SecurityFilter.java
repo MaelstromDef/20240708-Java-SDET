@@ -23,18 +23,20 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         String authHeader = request.getHeader("authorization"); // Grab token from request
 
+        // No tokens found
+        if(authHeader == null) {
+            request.removeAttribute("adminId");
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         // Validate
         if(!SecurityService.validate(authHeader)){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return;
         }
 
-        // No tokens found
-        if(authHeader == null) {
-            request.removeAttribute("adminId");
-            filterChain.doFilter(request, response);
-            return;
-        }// Grab admin ID from token
+        // Grab admin ID from token
         Integer adminId = SecurityService.getClaim(authHeader, SecurityService.ID_CLAIM, Integer.class);
         if(adminId == null) return;
 
