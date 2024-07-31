@@ -37,6 +37,9 @@ CREATE TABLE items(
 ALTER TABLE items
 	ALTER COLUMN name TYPE VARCHAR(255);
 
+ALTER TABLE items
+	ADD UNIQUE (name);
+
 -- WAREHOUSES
 
 DROP TABLE warehouses;
@@ -55,5 +58,8 @@ CREATE TABLE warehouses(
 ALTER TABLE warehouses
 	ALTER COLUMN name TYPE VARCHAR(255),
 	ALTER COLUMN location TYPE VARCHAR(255);
+
+ALTER TABLE warehouses
+	ADD UNIQUE (name);
 
 SELECT * FROM warehouses;

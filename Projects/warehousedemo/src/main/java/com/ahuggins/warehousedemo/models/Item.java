@@ -19,7 +19,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length=255)
+    @Column(length=255, unique=true)
     @NotNull
     private String name;
 

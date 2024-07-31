@@ -3,6 +3,7 @@ package com.ahuggins.warehousedemo.aspects;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.ahuggins.warehousedemo.services.SecurityService;
@@ -21,6 +22,12 @@ public class SecurityFilter extends OncePerRequestFilter{
     throws ServletException, IOException {
 
         String authHeader = request.getHeader("authorization"); // Grab token from request
+
+        // Validate
+        if(!SecurityService.validate(authHeader)){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return;
+        }
 
         // No tokens found
         if(authHeader == null) {

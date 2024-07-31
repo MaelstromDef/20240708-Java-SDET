@@ -40,7 +40,7 @@ public class WarehouseService {
     }
 
     public Optional<WarehouseDto> createWarehouse(int adminId, Warehouse warehouse) {
-        if(repo.findByIdAndAdministrator(warehouse.getId(), new Administrator(adminId)).isEmpty()){
+        if(repo.findByIdOrNameAndAdministrator(warehouse.getId(), warehouse.getName(), new Administrator(adminId)).isEmpty()){
             return Optional.of(mapper.toDto(repo.save(warehouse)));
         }
         
@@ -49,8 +49,13 @@ public class WarehouseService {
 
     public Optional<WarehouseDto> updateWarehouse(int adminId, int warehouseId, Warehouse warehouse){
         if(repo.findByIdAndAdministrator(warehouseId, new Administrator(adminId)).isPresent()){
+            // Information assurance
             warehouse.setId(warehouseId);
-            return Optional.of(mapper.toDto(repo.save(warehouse)));
+            warehouse.setAdministrator(new Administrator(adminId));
+
+            // Save and return
+            Warehouse saved = repo.save(warehouse);
+            return Optional.of(mapper.toDto(saved));
         }
         
         return Optional.empty();

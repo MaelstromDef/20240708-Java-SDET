@@ -2,7 +2,11 @@ package com.ahuggins.warehousedemo.models;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +28,7 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length=255)
+    @Column(length=255, unique = true)
     @NotNull
     private String name;
 
@@ -38,6 +42,7 @@ public class Warehouse {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "admin_id")
+    //@JsonManagedReference
     @JsonIdentityReference(alwaysAsId = true)
     private Administrator administrator;
 

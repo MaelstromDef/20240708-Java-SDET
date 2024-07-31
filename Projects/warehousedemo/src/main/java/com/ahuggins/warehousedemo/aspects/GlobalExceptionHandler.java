@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 // This class handles all common exceptions.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Object> handleStatusException(ResponseStatusException e){
         return new ResponseEntity<>(e.getMessage(), e.getStatusCode());
@@ -20,5 +22,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalAccessException.class)
     public ResponseEntity<Object> handleIllegalAccess(IllegalAccessException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGeneralException(Exception e){
+        String str = "";
+        for(StackTraceElement elem : e.getStackTrace()) str += elem.toString() + "\n";
+        logger.error(e.getMessage() + "\n" + e.getCause() + "\n" + str);
+        e.printStackTrace();
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

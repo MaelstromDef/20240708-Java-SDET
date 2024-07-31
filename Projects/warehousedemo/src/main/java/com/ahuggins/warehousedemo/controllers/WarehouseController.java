@@ -3,6 +3,7 @@ package com.ahuggins.warehousedemo.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,7 +85,12 @@ public class WarehouseController {
     @PutMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.OK)
     public WarehouseDto updateWarehouse(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestBody Warehouse warehouse){
-        Optional<WarehouseDto> optional = service.updateWarehouse(adminId, warehouseId, warehouse);
+        Optional<WarehouseDto> optional = Optional.empty();
+        try{
+            optional = service.updateWarehouse(adminId, warehouseId, warehouse);
+        }catch(DataIntegrityViolationException e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
 
         if(optional.isPresent()) return optional.get();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
