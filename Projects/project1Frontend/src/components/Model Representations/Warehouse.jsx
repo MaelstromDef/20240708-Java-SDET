@@ -32,7 +32,7 @@ export default function Warehouse(props){
         navigate('/items');
     }
 
-    return <tr key={props.id}>
+    return <tr key={props.index}>
         <td>{props.name}</td>
         <td>{props.location}</td>
         <td>{props.size}</td>

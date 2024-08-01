@@ -72,7 +72,7 @@ public class WarehouseController {
 
     // POST METHODS
 
-    @PostMapping("/{warehouseId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WarehouseDto createWarehouse(@RequestAttribute int adminId, @RequestBody Warehouse warehouse){
         Optional<WarehouseDto> optional = service.createWarehouse(adminId, warehouse);

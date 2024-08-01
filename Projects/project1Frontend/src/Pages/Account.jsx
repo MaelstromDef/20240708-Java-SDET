@@ -2,21 +2,39 @@ import './page.css'
 import { baseUrl, UserContext } from '../App';
 import { useContext, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Account shows current account information (company name) and allows information to be changed (company name and password)
 export default function Account(){
     const {user, setUser} = useContext(UserContext);
+
     const [feedback, setFeedback] = useState("");
-    const [allowCompanyNameChange, setAllowCompanyNameChange] = useState(true);
+    const [allowCompanyNameChange, setAllowCompanyNameChange] = useState(false);
+    const [showDel, setShowDel] = useState(false);
+
+    const navigate = useNavigate();
 
     // FORM MODIFICATION
 
+    // Changes 'allowCompanyNameChange' based on checkbox.
     const chkChangeCompany_Handler = (cb) => {
         setAllowCompanyNameChange(!(cb.target.checked));
     }
 
+    // Attempts an account delete.
+    const btnDelete_Handler = () =>{
+        setShowDel(false);
+
+        axios.delete(baseUrl)
+        .then(() =>{
+            navigate('/');
+        })
+        .catch(handleResponseError);
+    }
+
     // FORM SUBMISSION
 
+    // Records new user info.
     const handleResponseSuccess = (res) =>{
         // Update context info
         let adminInfo = user.adminInfo;
@@ -31,10 +49,12 @@ export default function Account(){
         setFeedback("Account updated.");
     }
 
+    // Outputs error messages to user.
     const handleResponseError = (error) =>{
         setFeedback("Something went wrong, please try again.");
     }
 
+    // Requests a modification to the user's stored information
     const handleSubmit = (event) =>{
         event.preventDefault();
         setFeedback("");
@@ -60,17 +80,29 @@ export default function Account(){
                 <input type="text" 
                     name="companyName" 
                     defaultValue={user.adminInfo.companyName} 
-                    readOnly={allowCompanyNameChange}/>
+                    readOnly={!allowCompanyNameChange}/>
                 <input type="checkbox" 
                     name="chkChangeCompanyName" 
-                    defaultValue={false} 
+                    defaultValue={allowCompanyNameChange} 
                     onClick={chkChangeCompany_Handler} />
+                <span><i>Check the box if you want to change the company's name.</i></span>
             </div>
 
             <label>Password</label>
             <input type="password" name="password"/>
 
             <input type='submit' value='Update Information'/>
+            {
+                showDel ?
+                    <>
+                        <p>This action will result in removing all data regarding this account. Are you sure you want to delete this account? (You will be logged out as soon as the account is deleted)</p>
+                        <div>
+                            <input type='button' value='Yes' onClick={btnDelete_Handler} />
+                            <input type='button' value='No' onClick={() => {setShowDel(false)}} />
+                        </div>
+                    </> :
+                <input type='button' onClick={() => {setShowDel(true);}} value='Delete Account'/>
+            }
         </form>
         <p>{feedback}</p>
     </>);

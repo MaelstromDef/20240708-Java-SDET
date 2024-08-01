@@ -1,9 +1,12 @@
-import { useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { UserContext } from "../App"
 import Warehouse from "../components/Model Representations/Warehouse";
 import axios from "axios";
+import WarehouseAdder from "../components/Warehouses/WarehouseAdder";
 
-const url = "http://localhost:8080/";
+import { baseUrl } from "../App";
+
+export const WarehousesContext = createContext();
 
 // Shows a list of all of the warehouses and allows you to navigate into one of them, and also provides the ability to add, remove,
 // and change warehouses.
@@ -36,14 +39,14 @@ export default function Warehouses(){
 
     useEffect(() =>{
         // Retrieve warehouses from backend
-        let getUrl = url + user.adminInfo.id;
+        let getUrl = baseUrl + '/' + user.adminInfo.id;
         
         axios.get(getUrl)
         .then(handleResponseSuccess)
         .catch(handleResponseError);
     }, [])
 
-    return <>
+    return <WarehousesContext.Provider value={{warehouses, setWarehouses}}>
         <h1>Warehouses</h1>
         <table>
             <thead>
@@ -56,11 +59,12 @@ export default function Warehouses(){
             </thead>
             <tbody>
                 {
-                    warehouses.map((warehouse) =>{
-                        return <Warehouse id={warehouse.id} name={warehouse.name} location={warehouse.location} size={warehouse.size}/>
+                    warehouses.map((warehouse, index) =>{
+                        return <Warehouse index={index} name={warehouse.name} location={warehouse.location} size={warehouse.size}/>
                     })
                 }
             </tbody>
         </table>
-    </>
+        <WarehouseAdder />
+    </WarehousesContext.Provider>
 }
