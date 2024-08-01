@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { UserContext } from "../App"
-import Warehouse from "../components/Model Representations/Warehouse";
+import Warehouse from "../components/Warehouses/Warehouse";
 import axios from "axios";
 import WarehouseAdder from "../components/Warehouses/WarehouseAdder";
 
@@ -61,7 +61,7 @@ export default function Warehouses(){
             <tbody>
                 {
                     warehouses.map((warehouse, index) =>{
-                        return <Warehouse index={index} name={warehouse.name} location={warehouse.location} size={warehouse.size}/>
+                        return <Warehouse index={index} warehouse={warehouse}/>
                     })
                 }
             </tbody>

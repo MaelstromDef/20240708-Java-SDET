@@ -31,7 +31,7 @@ export default function WarehouseForm(props){
 
         // Data validation
         if(warehouseName === "" || location === ""){
-            setFeedback("Fields can not be empty.");
+            setFeedback("Fields cannot be empty.");
             return;
         }
 
@@ -42,7 +42,6 @@ export default function WarehouseForm(props){
 
         // Request construction.
         const postUrl = baseUrl + '/' + user.adminInfo.id;
-        console.log(user.adminInfo.id);
         const warehouse = {
             name: warehouseName,
             location: location,

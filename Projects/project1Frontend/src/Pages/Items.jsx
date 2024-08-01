@@ -1,9 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import Item from "../components/Model Representations/Item";
+import { createContext, useContext, useEffect, useState } from "react";
+import Item from "../components/Items/Item";
 import { UserContext } from "../App";
 import axios from "axios";
 
-const url = "http://localhost:8080/";   // .../adminId/warehouseId/items
+import { baseUrl } from "../App";
+import ItemAdder from "../components/Items/ItemAdder";
+
+export const ItemsContext = createContext();
 
 export default function Items(){
     const {user, setUser} = useContext(UserContext);
@@ -11,30 +14,31 @@ export default function Items(){
 
     // Handlers
     const handleResponseSuccess = (res) =>{
-        console.log(res.data);
         setStoredItems([...res.data]);
     }
 
     const handleResponseError = (error) => {
-        if(error.response.status === 302){  // Found code, not an error.
-            handleResponseSuccess(error.response);
-            return;
-        }
-
         console.log("ERROR\n" + JSON.stringify(error));
+        return;
+        
+        // if(error.response.status === 302){  // Found code, not an error.
+        //     handleResponseSuccess(error.response);
+        //     return;
+        // }
     }
 
     // Grab stored items on load
     useEffect(()=>{
-        const getUrl = url + user.adminInfo.id + "/" + user.warehouse.id + "/items";
+        const getUrl = baseUrl + '/' + user.adminInfo.id + '/' + user.warehouse.id + '/items';
 
         axios.get(getUrl)
         .then(handleResponseSuccess)
         .catch(handleResponseError);
     }, [])
 
-    return <>
+    return <ItemsContext.Provider value={{storedItems, setStoredItems}}>
         <h1>{user.warehouse.name}</h1>
+        <ItemAdder />
         <table>
             <thead>
                 <tr>
@@ -45,13 +49,11 @@ export default function Items(){
             </thead>
             <tbody>
                 {
-                    storedItems.length > 0 ? 
-                        storedItems.map((storedItem) =>{
-                            return <Item id={storedItem.item.id} name={storedItem.item.name} quantity={storedItem.quantity}/>
-                        }) :
-                        <tr><td>No items found.</td></tr>
+                    storedItems.map((storedItem, index) =>{
+                        return <Item index={index} storedItem={storedItem}/>
+                    })
                 }
             </tbody>
         </table>
-    </>
+    </ItemsContext.Provider>
 }

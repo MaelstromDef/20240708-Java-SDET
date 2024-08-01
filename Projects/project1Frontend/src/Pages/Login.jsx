@@ -25,8 +25,6 @@ export default function Login(){
             authorization: res.data
         };
         setUser(newUser);
-        console.log(adminInfo.id);
-        console.log(user.adminInfo.id);
 
         // Set up future requests
         axios.defaults.headers.common['authorization'] = res.data;
