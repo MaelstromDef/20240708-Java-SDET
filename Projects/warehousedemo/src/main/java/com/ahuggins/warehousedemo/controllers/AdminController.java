@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import com.ahuggins.warehousedemo.models.Administrator;
 import com.ahuggins.warehousedemo.services.AdminService;
 
 
+@CrossOrigin
 @RestController
 public class AdminController {
     private AdminService service;
@@ -33,9 +35,10 @@ public class AdminController {
     public List<AdministratorDto> getAdministrators() {
         return service.getAllAdministrators();
     }
-    
 
-    @GetMapping("/login")
+    // POST METHODS
+
+    @PostMapping("/login")
     public String login(@RequestBody Administrator admin){
         try {
             return service.login(admin);
@@ -43,8 +46,6 @@ public class AdminController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }
-
-    // POST METHODS
 
     @PostMapping("/signup")
     public AdministratorDto signup(@RequestBody Administrator admin){
