@@ -48,6 +48,7 @@ export default function Warehouses(){
 
     return <WarehousesContext.Provider value={{warehouses, setWarehouses}}>
         <h1>Warehouses</h1>
+        <WarehouseAdder />
         <table>
             <thead>
                 <tr>
@@ -65,6 +66,5 @@ export default function Warehouses(){
                 }
             </tbody>
         </table>
-        <WarehouseAdder />
     </WarehousesContext.Provider>
 }
