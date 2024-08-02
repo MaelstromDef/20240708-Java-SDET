@@ -1,10 +1,11 @@
 import { useState } from "react";
 import ItemForm from "./ItemForm";
+import '../components.css'
 
 export default function ItemAdder(){
     const [showForm, setShowForm] = useState(false);
 
-    return <>
+    return <div className="Adder">
         {showForm ?
             <>
                 <ItemForm />
@@ -13,5 +14,5 @@ export default function ItemAdder(){
             <button onClick={() =>{setShowForm(true)}}>Add item.</button>
             
         }
-    </>
+    </div>
 }

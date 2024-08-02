@@ -17,6 +17,23 @@ import Warehouses from './Pages/Warehouses'
 
 export const UserContext = createContext();
 export const baseUrl = "http://localhost:8080";
+export const logout = () =>{
+  setUser({
+    // Admin information
+    adminInfo:{
+      id: null,
+      companyName: null
+    },
+
+    authorization: null,
+    warehouse: {
+      id: null,
+      name: null,
+      location: null,
+      size: null
+    }
+  })
+}
 
 function App() {
   const [user, setUser] = useState({

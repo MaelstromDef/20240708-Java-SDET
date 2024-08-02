@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const url = "http://localhost:8080/signup";
 
@@ -7,8 +8,14 @@ const url = "http://localhost:8080/signup";
 export default function Signup(){
     const [err, setErr] = useState("");
 
+    const navigate = useNavigate();
+
     const handleResponseSuccess = (res) => {
-        setErr('Success! "' + res.data.companyName + '" was successfully registered. Please log in.')
+        setErr('Success! "' + res.data.companyName + '" was successfully registered. Please log in. (You will be redirected in 3 seconds.)')
+
+        setTimeout(() =>{
+            navigate('/login');
+        }, 3000)
     }
 
     const handleResponseError = (error) => {

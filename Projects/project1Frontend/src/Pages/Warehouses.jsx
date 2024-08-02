@@ -5,6 +5,7 @@ import axios from "axios";
 import WarehouseAdder from "../components/Warehouses/WarehouseAdder";
 
 import { baseUrl } from "../App";
+import { useNavigate } from "react-router-dom";
 
 export const WarehousesContext = createContext();
 
@@ -24,6 +25,8 @@ export default function Warehouses(){
     const {user, setUser} = useContext(UserContext);
     const [warehouses, setWarehouses] = useState([]);
 
+    const navigate = useNavigate();
+
     const handleResponseSuccess = (res) =>{
         setWarehouses([...res.data]);
     }
@@ -38,6 +41,11 @@ export default function Warehouses(){
     }
 
     useEffect(() =>{
+        if(user.authorization === null || user.authorization === "") {
+            navigate('/')
+            return;
+        }
+
         // Retrieve warehouses from backend
         let getUrl = baseUrl + '/' + user.adminInfo.id;
         

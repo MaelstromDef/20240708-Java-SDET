@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import WarehouseForm from './WarehouseForm';
+import '../components.css'
 
 // Provides a table row for adding warehouses
 export default function WarehouseAdder(){
     const [showForm, setShowForm] = useState(false);
 
-    return <>
+    return <div className='Adder'>
         {showForm ? 
             <>
                 <WarehouseForm />
@@ -13,5 +14,5 @@ export default function WarehouseAdder(){
             </> :
             <button onClick={() => {setShowForm(true);}}>Add warehouse.</button>
         }
-    </>
+    </div>
 }

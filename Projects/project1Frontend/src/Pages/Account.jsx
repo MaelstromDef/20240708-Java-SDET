@@ -1,6 +1,6 @@
 import './page.css'
 import { baseUrl, UserContext } from '../App';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,12 +13,15 @@ export default function Account(){
     const [showDel, setShowDel] = useState(false);
 
     const navigate = useNavigate();
+    useEffect(() =>{
+        if(user.authorization === null || user.authorization === "") navigate('/')
+    }, [])
 
     // FORM MODIFICATION
 
     // Changes 'allowCompanyNameChange' based on checkbox.
     const chkChangeCompany_Handler = (cb) => {
-        setAllowCompanyNameChange(!(cb.target.checked));
+        setAllowCompanyNameChange((cb.target.checked));
     }
 
     // Attempts an account delete.
@@ -81,11 +84,13 @@ export default function Account(){
                     name="companyName" 
                     defaultValue={user.adminInfo.companyName} 
                     readOnly={!allowCompanyNameChange}/>
+                <div>
                 <input type="checkbox" 
                     name="chkChangeCompanyName" 
                     defaultValue={allowCompanyNameChange} 
                     onClick={chkChangeCompany_Handler} />
-                <span><i>Check the box if you want to change the company's name.</i></span>
+                <span><i>Check the box to change the company's name.</i></span>
+                </div>
             </div>
 
             <label>Password</label>
