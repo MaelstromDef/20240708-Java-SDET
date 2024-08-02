@@ -34,11 +34,24 @@ public class ItemController {
 
     // GET METHODS
 
+    /**
+     * Retrieves all stored items in warehouse.
+     * @param adminId       Id of the owning administrator.
+     * @param warehouseId   Id of the warehouse to retrieve items from.
+     * @return              A list of all stored items in the given warehouse.
+     */
     @GetMapping
     public List<StoredItem> getWarehouseItems(@RequestAttribute int adminId, @PathVariable int warehouseId){
         return service.getWarehouseItems(adminId, warehouseId);
     }
 
+    /**
+     * Retrieves a particular item from a warehouse.
+     * @param adminId       Id of the owning administrator.
+     * @param warehouseId   Id of the warehouse to retrive the item from.
+     * @param itemId        Id of the requested item.
+     * @return              The item requested, or a 404 error.
+     */
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.FOUND)
     public Item getItemById(@RequestAttribute int adminId, @PathVariable int warehouseId, @PathVariable int itemId){
@@ -48,6 +61,13 @@ public class ItemController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Retrieves a particular item from a warehouse.
+     * @param adminId       Id of the owning administrator.
+     * @param warehouseId   Id of the warehouse to retrieve the item from.
+     * @param name          Name of the requested item.
+     * @return              The item requested, or a 404 error.
+     */
     @GetMapping("/item")
     @ResponseStatus(HttpStatus.FOUND)
     public Item getItemByName(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestParam String name){
@@ -59,6 +79,13 @@ public class ItemController {
 
     // POST METHODS
 
+    /**
+     * Adds an item to a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to add to.
+     * @param item          Item to add.
+     * @return              Item entity that was stored, or a 409 error if the item already exists.
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StoredItem addItemToWarehouse(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestBody StoredItem item){
@@ -70,6 +97,13 @@ public class ItemController {
 
     // PUT METHODS
 
+    /**
+     * Updates an existing item to a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to update in.
+     * @param item          Item with the id to update, and the contents to update with.
+     * @return              The updated item, or a 404 error if the item doesn't exist.
+     */
     @PutMapping
     public StoredItem updateWarehouseItem(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestBody StoredItem item){
         Optional<StoredItem> optional = service.updateWarehouseItem(adminId, warehouseId, item);
@@ -80,6 +114,12 @@ public class ItemController {
 
     // DELETE METHODS
 
+    /**
+     * Removes an item from a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to remove from.
+     * @param itemId        ID of the item to remove.
+     */
     @DeleteMapping("/{itemId}")
     public void removeItemFromWarehouse(@RequestAttribute int adminId, @PathVariable int warehouseId, @PathVariable int itemId){
         try {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
-// This class handles all common exceptions.
+// This class intercepts common and purposeful exceptions and creates a clean response.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -23,14 +23,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleIllegalAccess(IllegalAccessException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
-
-    // @ExceptionHandler(Exception.class)
-    // public ResponseEntity<Object> handleGeneralException(Exception e){
-    //     String str = "";
-    //     for(StackTraceElement elem : e.getStackTrace()) str += elem.toString() + "\n";
-    //     logger.error(e.getMessage() + "\n" + e.getCause() + "\n" + str);
-    //     e.printStackTrace();
-
-    //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
 }

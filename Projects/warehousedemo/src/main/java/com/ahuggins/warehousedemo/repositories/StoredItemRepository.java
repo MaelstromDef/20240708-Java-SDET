@@ -9,8 +9,9 @@ import com.ahuggins.warehousedemo.models.Warehouse;
 import java.util.List;
 import com.ahuggins.warehousedemo.models.Item;
 
-
-
+/*
+ * Connects with the item_locations table in the database and allows Spring JPA operations.
+ */
 public interface StoredItemRepository extends JpaRepository<StoredItem, StoredItemKey>{
     public List<StoredItem> findByWarehouse(Warehouse warehouse);
     public List<StoredItem> findByItem(Item item);

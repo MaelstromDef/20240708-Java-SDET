@@ -2,6 +2,9 @@ package com.ahuggins.warehousedemo.models;
 
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +40,7 @@ public class Administrator {
     @OneToMany(mappedBy = "administrator", targetEntity = Warehouse.class)
     @JsonBackReference
     @JsonIgnore
+    @Cascade(CascadeType.PERSIST)
     private List<Warehouse> warehouses;
 
     public Administrator(){}

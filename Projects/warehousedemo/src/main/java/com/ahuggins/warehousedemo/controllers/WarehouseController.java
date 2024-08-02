@@ -37,12 +37,23 @@ public class WarehouseController {
 
     // GET METHODS
 
+    /**
+     * Retrieves all warehouses owned by an administrator.
+     * @param adminId   ID of the owning administrator.
+     * @return          A list of all ownded warehouses.
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
     public List<Warehouse> getAllWarehouses(@RequestAttribute int adminId){
         return service.getAllWarehouses(adminId);
     }
 
+    /**
+     * Retrieves a particular warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to retrieve.
+     * @return              The warehouse requested, or a 404 error.
+     */
     @GetMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.FOUND)
     public Warehouse getWarehouseById(@RequestAttribute int adminId, @PathVariable int warehouseId){
@@ -52,6 +63,12 @@ public class WarehouseController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Retrieves a particular warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseName Name of the warehouse to retrieve.
+     * @return              The warehouse requested, or a 404 error.
+     */
     @GetMapping("/warehouseByName")
     @ResponseStatus(HttpStatus.FOUND)
     public Warehouse getWarehouseByName(@RequestAttribute int adminId, @RequestParam String warehouseName){
@@ -61,6 +78,12 @@ public class WarehouseController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Retrieves warehouses that are in a particular location.
+     * @param adminId   ID of the owning administrator.
+     * @param location  Location to retrieve the warehouses from.
+     * @return          A list of the warehouses at that location, or a 404 error.
+     */
     @GetMapping("/warehouseByLocation")
     @ResponseStatus(HttpStatus.FOUND)
     public List<Warehouse> getWarehouseByLocation(@RequestAttribute int adminId, @RequestParam String location){
@@ -72,6 +95,12 @@ public class WarehouseController {
 
     // POST METHODS
 
+    /**
+     * Creates a warehouse.
+     * @param adminId   ID of the administrator to create the warehouse for.
+     * @param warehouse Warehouse to create for the administrator.
+     * @return          A representation of the warehouse that was created, or a 409 error.
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WarehouseDto createWarehouse(@RequestAttribute int adminId, @RequestBody Warehouse warehouse){
@@ -83,6 +112,13 @@ public class WarehouseController {
 
     // PUT METHODS
 
+    /**
+     * Updates a warehouse's information.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to update.
+     * @param warehouse     Information to update the warehouse with.
+     * @return              A representation of the warehouse that was updated, or a 404 error.
+     */
     @PutMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.OK)
     public WarehouseDto updateWarehouse(@RequestAttribute int adminId, @PathVariable int warehouseId, @RequestBody Warehouse warehouse){
@@ -99,6 +135,11 @@ public class WarehouseController {
 
     // DELETE METHODS
 
+    /**
+     * Removes a warehouse from a database.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to delete.
+     */
     @DeleteMapping("/{warehouseId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteWarehouse(@RequestAttribute int adminId, @PathVariable int warehouseId){

@@ -17,6 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter{
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Intercepts requests and verifies the existence and validity of authorization token in the request header.
+     * Once validated, sets the adminId attribute of the request, allowing controllers to be used successfully.
+     */
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
     throws ServletException, IOException {

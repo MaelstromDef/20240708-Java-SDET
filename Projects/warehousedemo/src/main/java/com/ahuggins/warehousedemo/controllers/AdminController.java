@@ -31,6 +31,11 @@ public class AdminController {
 
     // GET METHODS
 
+    /**
+     * Retrieves a list of all administrators from the database.
+     * @return  A list of the ids and company names for all administrators stored.
+     * @apiNote This mapping is unavailable within production, and should only be used for testing.
+     */
     @GetMapping
     public List<AdministratorDto> getAdministrators() {
         return service.getAllAdministrators();
@@ -38,6 +43,11 @@ public class AdminController {
 
     // POST METHODS
 
+    /**
+     * Attempts to log in an administrator.
+     * @param admin Administrator to log in.
+     * @return      Authorization token for the administrator, or a 401 error.
+     */
     @PostMapping("/login")
     public String login(@RequestBody Administrator admin){
         try {
@@ -47,6 +57,11 @@ public class AdminController {
         }
     }
 
+    /**
+     * Attempts to sign up an administrator.
+     * @param admin Administrator to sign up.
+     * @return      Administrator information (excluding password), or a 409 error.
+     */
     @PostMapping("/signup")
     public AdministratorDto signup(@RequestBody Administrator admin){
         Optional<AdministratorDto> dto = service.createAdministrator(admin);
@@ -57,6 +72,14 @@ public class AdminController {
 
     // PUT METHODS
 
+    /**
+     * Updates an administrator's information.
+     * @param adminId   ID of the administrator to update.
+     * @param admin     Administrator information to update with.
+     * @return          Administrator information, or a 404 error.
+     * @throws IllegalAccessException   Returns illegal access if the administrator's ID does not match the ID found in the auth. token.
+     * @throws ResponseStatusException  404 error on not found.
+     */
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public AdministratorDto updateAccount(@RequestAttribute int adminId, @RequestBody Administrator admin) 
@@ -70,6 +93,10 @@ public class AdminController {
 
     // DELETE METHODS
 
+    /**
+     * Removes an administrator from the database. 
+     * @param adminId   ID of the administrator to remove, found in the request's authorization token.
+     */
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     public void deleteAccount(@RequestAttribute int adminId){

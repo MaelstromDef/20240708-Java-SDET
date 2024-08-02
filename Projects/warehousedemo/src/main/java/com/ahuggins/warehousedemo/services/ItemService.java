@@ -29,6 +29,12 @@ public class ItemService {
         this.itemRepo = itemRepo;
     }
 
+    /**
+     * Retrieves all items in a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to retrieve from.
+     * @return              A list of all the items found in the warehouse.
+     */
     public List<StoredItem> getWarehouseItems(int adminId, int warehouseId) {
         // Create warehouse for comparator
         Warehouse warehouse = new Warehouse();
@@ -38,6 +44,11 @@ public class ItemService {
         return repo.findByWarehouse(warehouse); // Return result
     }
 
+    /**
+     * Retrieves an item.
+     * @param itemId    ID of the item to retrieve.
+     * @return          An optional containing the item if found.
+     */
     public Optional<Item> getItemById(int itemId) {
         List<StoredItem> items = repo.findByItem(new Item(itemId)); // Grab items
         
@@ -46,6 +57,13 @@ public class ItemService {
         return Optional.of(items.get(0).getItem());
     }
 
+    /**
+     * Retrieves an item from a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to retrieve from.
+     * @param name          Name of the item to retrieve.
+     * @return              An optional containing the item if found.
+     */
     public Optional<Item> getItemByName(int adminId, int warehouseId, String name) {
         // Construct query components
         Item item = new Item();
@@ -62,6 +80,13 @@ public class ItemService {
         return Optional.of(items.get(0).getItem());
     }
 
+    /**
+     * Add an item to a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of warehouse to add to.
+     * @param storedItem    Item to add.
+     * @return              An optional containing the item, if added.
+     */
     public Optional<StoredItem> addItemToWarehouse(int adminId, int warehouseId, StoredItem storedItem) {
         // Ensure that the item entity exists
         Optional<Item> fromRepo = itemRepo.findByName(storedItem.getItem().getName());
@@ -85,6 +110,13 @@ public class ItemService {
         return Optional.of(repo.save(storedItem));
     }
 
+    /**
+     * Updates an item that is in a warehouse.
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse containing the item.
+     * @param storedItem    Entity containing the ID of the item to update, and the information to update the item with.
+     * @return              An optional containing the updated item, if it was updated.
+     */
     public Optional<StoredItem> updateWarehouseItem(int adminId, int warehouseId, StoredItem storedItem) {
         // Ensure that the item entity exists
         Optional<Item> fromRepo = itemRepo.findByName(storedItem.getItem().getName());
@@ -108,6 +140,13 @@ public class ItemService {
         return Optional.of(repo.save(storedItem));
     }
 
+    /**
+     * Removes an item from a warehouse
+     * @param adminId       ID of the owning administrator.
+     * @param warehouseId   ID of the warehouse to remove an item from.
+     * @param itemId        ID of the item to remove.
+     * @throws IllegalAccessException   If there is no record matching the provided properties, an IllegalAccessException is thrown.
+     */
     public void removeItemFromWarehouse(int adminId, int warehouseId, int itemId) throws IllegalAccessException {
         // Ensure ownership
         Warehouse warehouse = new Warehouse();
