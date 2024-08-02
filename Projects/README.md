@@ -86,3 +86,6 @@ The data model contains 4 tables:
 - warehouses: contains entries that model a warehouse, with a name, location, size, and administrator id. Names must be unique, and an id is generated for these entries.
 - items: contains entries that model an item, simply containing a name. Names must be unique, and an id is generated for these entries.
 - item_locations: contains entries that model the many-to-many relationship between items and warehouses, with each entry being a number of some item in a warehouse. Contains a composite primary key of the item id and the warehouse id, and contains a quantity field.
+
+### Notes ###
+Deleting administrators that owned warehouses was not functioning at the time of presentations due to a cascade issue, since then a fix has been made.

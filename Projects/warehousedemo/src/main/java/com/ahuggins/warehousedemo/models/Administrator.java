@@ -40,7 +40,7 @@ public class Administrator {
     @OneToMany(mappedBy = "administrator", targetEntity = Warehouse.class)
     @JsonBackReference
     @JsonIgnore
-    @Cascade(CascadeType.PERSIST)
+    @Cascade(CascadeType.REMOVE)
     private List<Warehouse> warehouses;
 
     public Administrator(){}

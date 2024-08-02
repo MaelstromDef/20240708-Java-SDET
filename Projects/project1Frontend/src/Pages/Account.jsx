@@ -1,5 +1,5 @@
 import './page.css'
-import { baseUrl, UserContext } from '../App';
+import { baseUrl, logout, UserContext } from '../App';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ export default function Account(){
 
         axios.delete(baseUrl)
         .then(() =>{
-            navigate('/');
+            navigate('/')
         })
         .catch(handleResponseError);
     }
@@ -54,6 +54,15 @@ export default function Account(){
 
     // Outputs error messages to user.
     const handleResponseError = (error) =>{
+        if(Object.keys(error).length === 0){
+            navigate('/')
+            return;
+        }
+
+        if(error.response.status === 401) {
+            navigate('/')
+            return;
+        }
         setFeedback("Something went wrong, please try again.");
     }
 
