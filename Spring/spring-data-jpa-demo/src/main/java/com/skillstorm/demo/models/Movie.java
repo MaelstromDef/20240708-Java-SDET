@@ -64,8 +64,8 @@ public class Movie {
 
     */
     @ManyToOne
-    @Cascade(CascadeType.PERSIST)
-    @NotNull
+    @Cascade({CascadeType.PERSIST, CascadeType.MERGE})
+    // @NotNull
     @JoinColumn(name = "director_id")
     @JsonIdentityReference(alwaysAsId= true)
     private Director director;
