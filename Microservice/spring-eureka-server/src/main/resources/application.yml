@@ -1,0 +1,12 @@
+spring:
+    application:
+        name: spring-eureka-server  # ID for the Eureka discovery client
+
+# Each project must have a different port.
+server:
+    port: 8761  # standard Eureka server port
+
+eureka:
+    client:
+        fetch-registry: false
+        register-with-eureka: false

@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: accounts-service  # Used as the API Gateway route ID.
+
+server:
+    port: 8081
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
+    # How long between each heartbeat request.
+    instance:
+        leaseRenewalIntervalInSeconds: 30

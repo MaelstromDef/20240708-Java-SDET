@@ -1,0 +1,47 @@
+spring:
+    application:
+        name: spring-gateway
+    cloud:      # Configure global cors
+        gateway:
+            routes:
+            -   id: accounts-service
+                uri: lb://accounts-service        # This can be any path.
+                predicates:
+                - Path=/accounts/**             # This path will map to this specific service
+                filters:
+                -   name: CircuitBreaker          # Needs to be exactly this
+                    args:
+                        name: fallbackController    # needs to be in the format of a Bean
+                        fallbackUri: forward:/cache/accounts
+                    metadata:
+                        cors:
+                            allowedOrigins: '*'
+                            allowedMethods:
+                            - GET
+                            - POST
+                            allowedHeaders: '*'
+                            maxAge: 30
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+
+                # - id: payments-service
+                #   uri: lb://payments-service
+                #   predicates:
+                #     - Path=/payments/**
+                #   filters:
+                #     - name: CircuitBreaker
+                #       args:
+                #         name: fallbackController    # needs to be in the format of a Bean
+                #         fallbackUri: forward:/cache/payments
+                      
+server:
+    port: 8125  # Standard API Gateway port
+
+eureka:
+    client:
+        service-url: 
+            defaultZone: http://localhost:8761/eureka   # Eureka server location
