@@ -8,7 +8,7 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ahuggins</groupId>
+	<groupId>com.skillstorm</groupId>
 	<artifactId>spring-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-gateway</name>
@@ -31,19 +31,20 @@
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
-		<!-- Needed for both circuit breaker and reactor dependencies for the circuit breaker. -->
+
+		<!-- Needed for both circuitbreaker and reactor dependencies for your circuitbreaker to work-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
 		</dependency>
 
-		<!-- Needed to setup the API Gateway. -->
+		<!-- Needed to setup our API Gateway-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway-mvc</artifactId>
 		</dependency>
 
-		<!-- Needed for the Discovery Client. -->
+		<!-- Needed for the Eureka Discovery Client-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -54,17 +55,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-gateway -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gateway</artifactId>
-			<version>4.1.5</version>
-			<type>pom</type>
-		</dependency>
-
 	</dependencies>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

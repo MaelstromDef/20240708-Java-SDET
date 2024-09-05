@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="TestNGTest-8c9ae8e1-dced-4f43-b18e-587b8cd0f4ff"
+           tests="1"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="0.668">
+    <properties></properties>
+
+
+
+            <testcase
+                name="findAllMoviesTest"
+                time="0.668"
+                classname="com.skillstorm.springaop.controllers.MovieControllerTest">
+            </testcase>
+</testsuite>

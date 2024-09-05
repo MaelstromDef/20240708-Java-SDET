@@ -8,7 +8,7 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ahuggins</groupId>
+	<groupId>com.skilstorm</groupId>
 	<artifactId>accounts-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>accounts-service</name>
@@ -35,8 +35,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<!-- Needed for discovery client. -->
+		
+		<!-- Needed for Discovery Client -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>

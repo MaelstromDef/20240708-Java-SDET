@@ -1,55 +1,35 @@
+server:
+    port: 8125      # standard port for api gateway
+
+# set up the eureka client for service discovery
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka   # location of eureka server
+
+# configure the api gateway
 spring:
-    application:
-        name: spring-gateway
-    cloud:      # Configure global cors
+    cloud:
         gateway:
-            corsConfigurations:
-                '[/**]':
-                    allowedOrigins: http://localhost:5173
-                    allowedMethods:
+            # setting up global cors handling
+            cors-configurations:
+                '[/**]':                                    # applying cors configuration to all routes
+                    allowedOrigins: http://localhost:5173   # the place(s) that are allowed to send requests to the gateway
+                    allowedMethods:                         # list of all allowed HTTP methods
                         - GET
                         - POST
                         - PUT
                         - DELETE
+
             routes:
-            -   id: accounts-service
-                uri: lb://accounts-service        # This can be any path.
-                predicates:
-                - Path=/accounts/**             # This path will map to this specific service
-                filters:
-                -   name: CircuitBreaker          # Needs to be exactly this
-                    args:
-                        name: fallbackController    # needs to be in the format of a Bean
+                - id: accounts-service
+                  uri: lb://accounts-service        # this can be any path - here we're using spring's own load balancer to mange traffic to accounts-service
+                  predicates:
+                    - Path=/accounts/**             # this path will map to this specific service
+                  filters:
+                    - name: CircuitBreaker          # needs to be exactly this - references the CircuitBreaker class from Resilience4J
+                      args:
+                        name: fallbackController    # needs to be in the format of a bean 
                         fallbackUri: forward:/cache/accounts
-            #         metadata:
-            #             cors:
-            #                 allowedOrigins: '*'
-            #                 allowedMethods:
-            #                 - GET
-            #                 - POST
-            #                 allowedHeaders: '*'
-            #                 maxAge: 30
+            
 
-management:
-    endpoints:
-        web:
-            exposure:
-                include: "*"
-
-                # - id: payments-service
-                #   uri: lb://payments-service
-                #   predicates:
-                #     - Path=/payments/**
-                #   filters:
-                #     - name: CircuitBreaker
-                #       args:
-                #         name: fallbackController    # needs to be in the format of a Bean
-                #         fallbackUri: forward:/cache/payments
-                      
-server:
-    port: 8125  # Standard API Gateway port
-
-eureka:
-    client:
-        service-url: 
-            defaultZone: http://localhost:8761/eureka   # Eureka server location
